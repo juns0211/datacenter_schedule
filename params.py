@@ -13,6 +13,6 @@ def momo_sale(params):
         momo 銷售
     '''
     # 抓前一天資料
-    {'supplierId':'017217'} | {'reportDate':(datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")}
+    return params | {'reportDate':(datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")}
 
     
