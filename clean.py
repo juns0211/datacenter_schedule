@@ -1,3 +1,4 @@
+import datetime
 # 資料清洗用fun
 
 def example(data):
@@ -35,3 +36,27 @@ def example(data):
 
     # data參數回傳格式依照data傳進來時的原生格式
     return {'order':order, 'warehouse':wh_list}
+
+
+def momo_sale(data):
+    '''
+    MOMO 銷售
+    '''
+    search_date = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+    result = []
+    for d in data:
+        result.append(
+                {
+                        'order_day':search_date,
+                        'available_qty': d['可接單量'],
+                        'QC':  d['商品原廠編號'] if d['商品原廠編號'].isdigit() else None,
+                        'product_name': d['商品名稱'],
+                        'product_id': d['商品編號'],
+                        'total_sale_qty': d['總販售量'],
+                        'total_sale_price': d['訂購總金額'],
+                        'product_sale_qty': d['訂購數量(訂購-取消)'],
+                        'sale_qty': d['訂購數量(訂購-取消).1'],
+                }
+        )
+    # data參數回傳格式依照data傳進來時的原生格式
+    return result

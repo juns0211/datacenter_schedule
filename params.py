@@ -7,4 +7,12 @@ def example(params):
     '''
     # dict 合併用法
     return params | {'year':datetime.datetime.now().year, 'month':datetime.datetime.now().month}
+
+def momo_sale(params):
+    '''
+        momo 銷售
+    '''
+    # 抓前一天資料
+    {'supplierId':'017217'} | {'reportDate':(datetime.datetime.now() - datetime.timedelta(days=1)).strftime("%Y-%m-%d")}
+
     

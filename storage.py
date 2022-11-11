@@ -1,5 +1,11 @@
 # DB儲存資料
 import pymysql
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, Index, DateTime, Boolean, Table, MetaData, DECIMAL, column, Date, NVARCHAR 
+from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy import create_engine, insert
+from sqlalchemy import and_, or_
+Base = declarative_base()
 
 def example(data):
     '''
@@ -47,3 +53,48 @@ def example(data):
         conn.commit()
     return
 
+
+def momo_sale(data):
+    '''
+    momo 銷售
+    '''
+    db = {
+            'url_port': '10.0.130.225',
+            'acc': 'juns_chen',
+            'pw': 'Juns1984',
+            'db_name': 'DataTeam',
+        }
+    url_port = db['url_port']
+    acc = db['acc']
+    pw = db['pw']
+    db_name = db['db_name']
+    engine = create_engine(f'mssql://{acc}:{pw}@{url_port}/{db_name}?driver=SQL Server', connect_args={'timeout':600})
+    Momo_sale_db.insert(values=data, engine=engine)
+    return
+
+
+
+class ModelMixin:
+    @classmethod
+    def insert(cls, values, engine):
+        stmt = insert(cls, values=values)
+        engine.execute(stmt)
+
+# 回傳資料表格式
+class Momo_sale_db(Base, ModelMixin):
+    __table_args__ = {"schema": "tableau"}
+    __tablename__ = 'momo_product_sale'
+    mp_id = Column(Integer, primary_key=True) #pk  (免帶)
+    order_day = Column(Date) #訂單日期
+    available_qty = Column(Integer) #可接單量
+    QC = Column(Integer) #商品原廠編號
+    product_name = Column(NVARCHAR) #商品名稱
+    product_id = Column(Integer) #商品編號
+    total_sale_qty = Column(Integer) #總販售量
+    total_sale_price = Column(DECIMAL) #訂購總金額
+    product_sale_qty = Column(Integer) #訂購數量(訂購-取消)
+    sale_qty = Column(Integer) #訂購數量(訂購-取消).1
+    #ins_date = Column(DateTime) #資料匯入時間 (免帶)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name, None) for c in self.__table__.columns}
