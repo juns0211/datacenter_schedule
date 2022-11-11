@@ -48,14 +48,14 @@ def momo_sale(data):
         result.append(
                 {
                         'order_day':search_date,
-                        'available_qty': d['可接單量'],
+                        'available_qty': d.get('可接單量', None),
                         'QC':  d['商品原廠編號'] if d['商品原廠編號'].isdigit() else None,
-                        'product_name': d['商品名稱'],
-                        'product_id': d['商品編號'],
-                        'total_sale_qty': d['總販售量'],
-                        'total_sale_price': d['訂購總金額'],
-                        'product_sale_qty': d['訂購數量(訂購-取消)'],
-                        'sale_qty': d['訂購數量(訂購-取消).1'],
+                        'product_name': d.get('商品名稱', None),
+                        'product_id': d.get('商品編號', None),
+                        'total_sale_qty': d.get('總販售量',None),
+                        'total_sale_price': d.get('訂購總金額',None),
+                        'product_sale_qty': d.get('訂購數量(訂購-取消)', None),
+                        'sale_qty': d.get('訂購數量(訂購-取消).1', None),
                 }
         )
     # data參數回傳格式依照data傳進來時的原生格式
