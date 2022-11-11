@@ -59,9 +59,9 @@ def momo_sale(data):
     momo 銷售
     '''
     db = {
-            'url_port': '10.0.130.225',
-            'acc': 'juns_chen',
-            'pw': 'Juns1984',
+            'url_port': '10.0.128.225',
+            'acc': 'c8',
+            'pw': '1qaz2wsx',
             'db_name': 'DataTeam',
         }
     url_port = db['url_port']
