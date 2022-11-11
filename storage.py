@@ -35,15 +35,15 @@ def example(data):
                 }
     '''
     db_settings = {
-                        "host": "127.0.0.1",
-                        "port": 3306,
-                        "user": "root",
-                        "password": "xxxxxxxxx",
-                        "db": "xxxxx",
-                        "charset": "utf8"
-                    }
+        "host": "127.0.0.1",
+        "port": 3306,
+        "user": "root",
+        "password": "xxxxxxxxx",
+        "db": "xxxxx",
+        "charset": "utf8"
+    }
     conn = pymysql.connect(db_settings)
-    with conn.cursor() as cursor:         
+    with conn.cursor() as cursor:
         command = "INSERT INTO charts(id, name, artist)VALUES(%s, %s, %s)"
         charts = charts.get_charts_tracks("H_PilcVhX-E8N0qr1-")
         for chart in charts:
@@ -68,7 +68,9 @@ def momo_sale(data):
     acc = db['acc']
     pw = db['pw']
     db_name = db['db_name']
-    engine = create_engine(f'mssql://{acc}:{pw}@{url_port}/{db_name}?driver=SQL Server', connect_args={'timeout':600})
+    engine = create_engine(
+        f'mssql://{acc}:{pw}@{url_port}/{db_name}?driver=SQL Server',
+        connect_args={'timeout':600})
     Momo_sale_db.insert(values=data, engine=engine)
     return
 
