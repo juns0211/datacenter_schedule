@@ -71,7 +71,9 @@ def momo_sale(data):
     engine = create_engine(
         f'mssql://{acc}:{pw}@{url_port}/{db_name}?driver=SQL Server',
         connect_args={'timeout':600})
-    Momo_sale_db.insert(values=data, engine=engine)
+    while data:
+        values, data = data[:1000], data[1000:]
+        Momo_sale_db.insert(values=values, engine=engine)
     return
 
 
