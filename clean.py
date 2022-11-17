@@ -60,3 +60,21 @@ def momo_sale(data):
         )
     # data參數回傳格式依照data傳進來時的原生格式
     return result
+
+def pchome_stock(data):
+    '''
+    Pchome 庫存
+    '''
+    stock_datetime = datetime.datetime.now().strftime(f"%Y-%m-%d %H:%M:%S")
+    result = []
+    for d in data:
+        result.append(
+            {
+                'stock_datetime': stock_datetime,
+                'VendorPId': data['VendorPId'],
+                'ProdId': data['ProdId'],
+                'ProdName': data['ProdName'],
+                'available_qty': data['AvailableQty'],
+            }
+        )
+    return result

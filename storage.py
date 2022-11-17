@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, In
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine, insert
 from sqlalchemy import and_, or_
+from setting import mssqldb
 Base = declarative_base()
 
 def example(data):
@@ -58,20 +59,14 @@ def momo_sale(data):
     '''
     momo 銷售
     '''
-    db = {
-            'url_port': '10.0.128.225',
-            'acc': 'c8',
-            'pw': '1qaz2wsx',
-            'db_name': 'DataTeam',
-        }
-    url_port = db['url_port']
-    acc = db['acc']
-    pw = db['pw']
-    db_name = db['db_name']
-    engine = create_engine(
-        f'mssql://{acc}:{pw}@{url_port}/{db_name}?driver=SQL Server',
-        connect_args={'timeout':600})
-    Momo_sale_db.insert(values=data, engine=engine)
+    Momo_sale_db.insert(values=data, engine=mssqldb)
+    return
+
+def pc_stock(data):
+    '''
+    pc 庫存
+    '''
+    Momo_sale_db.insert(values=data, engine=mssqldb)
     return
 
 
@@ -82,7 +77,7 @@ class ModelMixin:
         stmt = insert(cls, values=values)
         engine.execute(stmt)
 
-# 回傳資料表格式
+# momo_sale_db回傳資料表格式
 class Momo_sale_db(Base, ModelMixin):
     __table_args__ = {"schema": "tableau"}
     __tablename__ = 'momo_product_sale'
@@ -96,6 +91,21 @@ class Momo_sale_db(Base, ModelMixin):
     total_sale_price = Column(DECIMAL) #訂購總金額
     product_sale_qty = Column(Integer) #訂購數量(訂購-取消)
     sale_qty = Column(Integer) #訂購數量(訂購-取消).1
+    #ins_date = Column(DateTime) #資料匯入時間 (免帶)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name, None) for c in self.__table__.columns}
+
+# pc_stock回傳資料表格式
+class Pc_stock_db(Base, ModelMixin):
+    __table_args__ = {"schema": "tableau"}
+    __tablename__ = 'pc_stock'
+    ps_id = Column(Integer, primary_key=True) #pk  (免帶)
+    stock_datetime = Column(DateTime) #即時庫存抓取時間
+    VendorPId = Column(NVARCHAR) #廠商料號(QC)
+    ProdId = Column(NVARCHAR) #商品ID
+    ProdName = Column(NVARCHAR) #商品名稱
+    available_qty = Column(Integer) #可賣量
     #ins_date = Column(DateTime) #資料匯入時間 (免帶)
 
     def to_dict(self):

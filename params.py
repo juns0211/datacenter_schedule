@@ -21,3 +21,9 @@ def momo_sale(params):
         **params,
         'reportDate': (datetime.datetime.now() - datetime.timedelta(days=1)).strftime(f"%Y-%m-%d")
     }
+
+def pchome_stock(params):
+    '''
+        pchome 庫存
+    '''
+    return params
