@@ -10,7 +10,7 @@ with (BASE_PATH / 'config.yaml').open(encoding='utf8') as f:
     TEST_MSSQL_DB_SETTING = cf['TEST_MSSQL_DB_SETTING']
 
 # MSSQL
-from db import Database
+from .db import Database
 if config('PY_ENV', None) is None:
     mssqldb = Database(MSSQL_DB_SETTING)
 else:

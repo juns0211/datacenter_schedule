@@ -1,16 +1,20 @@
 # 排程資料庫連線位置
 MSSQL_DB_SETTING:
-  drivername: mssql+pymssql
+  drivername: mssql
   username: juns_chen
   password: 1qaz2wsx
   host: 10.0.130.225
   port: 1433
   database: DataTeam
+  query:
+    driver: ODBC Driver 17 for SQL Server
 
 TEST_MSSQL_DB_SETTING:
-  drivername: mssql+pymssql
+  drivername: mssql
   username: c8
   password: 1qaz2wsx
   host: 10.0.128.225
   port: 1433
   database: DataTeam
+  query:
+    driver: SQL Server

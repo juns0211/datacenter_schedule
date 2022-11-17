@@ -3,7 +3,7 @@ import pymysql
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, Index, DateTime, Boolean, Table, MetaData, DECIMAL, Date, NVARCHAR 
 from sqlalchemy import insert
-import setting
+from utils.setting import mssqldb
 Base = declarative_base()
 
 def example(data):
@@ -60,7 +60,7 @@ def momo_sale(data):
     column_len = len(data[0].keys())
     while data:
         values, data = data[:2100//column_len], data[2100//column_len:]
-        Momo_sale_db.insert(values=values, engine=setting.mssqldb.engine)
+        Momo_sale_db.insert(values=values, engine=mssqldb.engine)
     return
 
 def pc_stock(data):
@@ -70,7 +70,7 @@ def pc_stock(data):
     column_len = len(data[0].keys())
     while data:
         values, data = data[:2100//column_len], data[2100//column_len]
-        Pc_stock_db.insert(values=values, engine=setting.mssqldb.engine)
+        Pc_stock_db.insert(values=values, engine=mssqldb.engine)
 
 class ModelMixin:
     @classmethod
