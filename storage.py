@@ -1,11 +1,9 @@
 # DB儲存資料
 import pymysql
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, Index, DateTime, Boolean, Table, MetaData, DECIMAL, column, Date, NVARCHAR 
-from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy import create_engine, insert
-from sqlalchemy import and_, or_
-from setting import mssqldb
+from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, Index, DateTime, Boolean, Table, MetaData, DECIMAL, Date, NVARCHAR 
+from sqlalchemy import insert
+import setting
 Base = declarative_base()
 
 def example(data):
@@ -59,17 +57,20 @@ def momo_sale(data):
     '''
     momo 銷售
     '''
-    Momo_sale_db.insert(values=data, engine=mssqldb)
+    column_len = len(data[0].keys())
+    while data:
+        values, data = data[:2100//column_len], data[2100//column_len:]
+        Momo_sale_db.insert(values=values, engine=setting.mssqldb.engine)
     return
 
 def pc_stock(data):
     '''
     pc 庫存
     '''
-    Momo_sale_db.insert(values=data, engine=mssqldb)
-    return
-
-
+    column_len = len(data[0].keys())
+    while data:
+        values, data = data[:2100//column_len], data[2100//column_len]
+        Pc_stock_db.insert(values=values, engine=setting.mssqldb.engine)
 
 class ModelMixin:
     @classmethod
