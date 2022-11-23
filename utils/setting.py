@@ -18,7 +18,7 @@ with resources.open_binary('utils', 'config.yaml') as f:
 
 # MSSQL
 from .db import Database
-if config('PY_ENV', None) is None:
+if config('PY_ENV', 'prod') == 'prod':
     mssqldb = Database(MSSQL_DB_SETTING)
 else:
     mssqldb = Database(TEST_MSSQL_DB_SETTING)
