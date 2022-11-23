@@ -42,16 +42,16 @@ def momo_sale(data):
     '''
     MOMO 銷售
     '''
-    search_date = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime(f"%Y-%m-%d")
+    search_date = (datetime.datetime.now() - datetime.timedelta(days=1)).date()
     result = []
     for d in data:
         result.append(
                 {
                 'order_day':search_date,
                 'available_qty': d.get('可接單量', None),
-                'QC':  d['商品原廠編號'] if d['商品原廠編號'].isdigit() else None,
+                'QC':  int(d['商品原廠編號']) if d['商品原廠編號'].isdigit() else None,
                 'product_name': d.get('商品名稱', None),
-                'product_id': d.get('商品編號', None),
+                'product_id': int(d['商品編號']) if d['商品編號'].isdigit() else None,
                 'total_sale_qty': d.get('總販售量',None),
                 'total_sale_price': d.get('訂購總金額',None),
                 'product_sale_qty': d.get('訂購數量(訂購-取消)', None),

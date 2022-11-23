@@ -1,6 +1,7 @@
 # DB儲存資料
-import pymysql
+import pymssql
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint, Index, DateTime, Boolean, Table, MetaData, DECIMAL, Date, NVARCHAR 
 from sqlalchemy import insert
 from utils.setting import mssqldb
@@ -41,7 +42,7 @@ def example(data):
         "db": "xxxxx",
         "charset": "utf8"
     }
-    conn = pymysql.connect(db_settings)
+    conn = pymssql.connect(db_settings)
     with conn.cursor() as cursor:
         command = "INSERT INTO charts(id, name, artist)VALUES(%s, %s, %s)"
         charts = charts.get_charts_tracks("H_PilcVhX-E8N0qr1-")
@@ -75,8 +76,13 @@ def pc_stock(data):
 class ModelMixin:
     @classmethod
     def insert(cls, values, engine):
-        stmt = insert(cls, values=values)
-        engine.execute(stmt)
+        stmt = insert(cls)
+        for value in values:
+            stmt = stmt.values(**value)
+
+        with sessionmaker(bind=engine)() as session:
+            session.execute(stmt)
+            session.commit()
 
 # momo_sale_db回傳資料表格式
 class Momo_sale_db(Base, ModelMixin):
