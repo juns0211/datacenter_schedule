@@ -62,7 +62,7 @@ def momo_sale(data):
     while data:
         values, data = data[:2100//column_len], data[2100//column_len:]
         Momo_sale_db.insert(values=values, engine=mssqldb.engine)
-    return
+
 
 def pc_stock(data):
     '''
@@ -73,12 +73,11 @@ def pc_stock(data):
         values, data = data[:2100//column_len], data[2100//column_len]
         Pc_stock_db.insert(values=values, engine=mssqldb.engine)
 
+
 class ModelMixin:
     @classmethod
     def insert(cls, values, engine):
-        stmt = insert(cls)
-        for value in values:
-            stmt = stmt.values(**value)
+        stmt = insert(cls).values(values)
 
         with sessionmaker(bind=engine)() as session:
             session.execute(stmt)
